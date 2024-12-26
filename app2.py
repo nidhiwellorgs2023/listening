@@ -65,8 +65,8 @@ for part_name, part_data in ielts_data[0].items():
             st.error("Audio file not available for this part.")
 
         for question in part_data['questions']:
-            qid = question['question']
-            st.write(f"**{qid}**")
+            question_text = question['question']
+            st.write(f"**{question_text}**")
 
             if question.get('type') == 'diagram':
                 # Display diagram
@@ -82,37 +82,56 @@ for part_name, part_data in ielts_data[0].items():
                     diagram_labels[label_id] = st.selectbox(
                         f"Label for {label_id}:",
                         question['options'],
-                        key=f"diagram_{part_name}_{qid}_{label_id}"
+                        key=f"diagram_{part_name}_{question_text}_{label_id}"
                     )
-                user_answers[qid] = diagram_labels
+                user_answers[question_text] = diagram_labels
 
             elif 'options' in question:
                 # Multiple Choice Questions
-                user_answers[qid] = st.radio(
+                user_answers[question_text] = st.radio(
                     "Select your answer:",
                     question['options'],
-                    key=f"mcq_{part_name}_{qid}"
+                    key=f"mcq_{part_name}_{question_text}"
                 )
 
             elif 'matches' in question:
-                # Match the Following Questions
-                dropdown_answers = {}
-                for idx, item in enumerate(question['matches']):
-                    # Dynamically determine match type
-                    left = item.get('apartment', item.get('person', item.get('strategy', item.get('feature'))))
-                    options = item.get('facility', item.get('work', item.get('benefit', item.get('description'))))
+                # Collect all unique options from matches
+                unique_options = []
+                for match in question['matches']:
+                    options = [
+                        match.get('facility'),
+                        match.get('work'),
+                        match.get('benefit'),
+                        match.get('description'),
+                    ]
+                    unique_options.extend(filter(None, options))  # Add only non-None options
 
-                    dropdown_answers[left] = st.selectbox(
-                        f"Match for {left}:",
-                        [options],
-                        key=f"match_{part_name}_{qid}_{idx}"
+                # Remove duplicates
+                # unique_options = list(set(unique_options))
+
+                # Dropdown for each matching pair
+                match_answers = {}
+                for match in question['matches']:
+                    left_item = (
+                        match.get('apartment')
+                        or match.get('person')
+                        or match.get('strategy')
+                        or match.get('feature')
                     )
-                user_answers[qid] = dropdown_answers
+
+                    if left_item:
+                        match_answers[left_item] = st.selectbox(
+                            f"Match for {left_item}:",
+                            unique_options,
+                            key=f"match_{part_name}_{question_text}_{left_item}",
+                        )
+
+                user_answers[question_text] = match_answers
 
             else:
                 # Fill in the Blanks Questions
-                user_answers[qid] = st.text_input(
-                    "Your answer:", key=f"fill_{part_name}_{qid}"
+                user_answers[question_text] = st.text_input(
+                    "Your answer:", key=f"fill_{part_name}_{question_text}"
                 )
 
 # Submit and evaluate answers
@@ -125,10 +144,10 @@ if st.button("Submit Exam"):
     for part_name, part_data in ielts_data[0].items():
         if part_name.startswith("Part"):
             for question in part_data['questions']:
-                qid = question['question']
+                question_text = question['question']
                 if question.get('type') == 'diagram':
                     correct_labels = {label['id']: label['correct_label'] for label in question['labels']}
-                    user_labels = user_answers.get(qid, {})
+                    user_labels = user_answers.get(question_text, {})
                     if user_labels == correct_labels:
                         correct_count += 1
                     elif not user_labels:
@@ -137,7 +156,7 @@ if st.button("Submit Exam"):
                         incorrect_count += 1
                 elif 'matches' in question:
                     correct_matches = {item.get('apartment', item.get('person')): item.get('facility', item.get('work')) for item in question['matches']}
-                    user_matches = user_answers.get(qid, {})
+                    user_matches = user_answers.get(question_text, {})
                     if user_matches == correct_matches:
                         correct_count += 1
                     elif not user_matches:
@@ -146,7 +165,7 @@ if st.button("Submit Exam"):
                         incorrect_count += 1
                 else:
                     correct_answer = question['answer']
-                    user_answer = user_answers.get(qid, None)
+                    user_answer = user_answers.get(question_text, None)
                     if user_answer is None or user_answer.strip() == "":
                         unanswered_count += 1
                     elif user_answer.strip().lower() == correct_answer.strip().lower():
@@ -165,3 +184,4 @@ if st.button("Submit Exam"):
     st.write(f"**Band Score:** {band_score}")
     st.write(f"**Skill Level:** {band_description['skill_level']}")
     st.write(f"**Description:** {band_description['description']}")
+
