@@ -71,7 +71,7 @@ for part_name, part_data in ielts_data[0].items():
             if question.get('type') == 'diagram':
                 # Display diagram
                 if question.get('image'):
-                    st.image( "http://files.cluster2.hostgator.co.in/hostgator89775/image/librarytour_2.jpg", caption="Label the diagram")
+                    st.image( "https://sp-uploads.s3.amazonaws.com/uploads%2Fservices%2F2190321%2F20210914205237_61410b9579eb1_115009_listening_sample_task___plan_map_diagram_labellingpage0.png", caption="Label the diagram")
                 else:
                     st.error("Diagram not available for this question.")
 
