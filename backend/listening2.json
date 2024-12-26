@@ -144,7 +144,7 @@
         {
           "question": "Label the plan below. Choose answers from the options provided.",
           "type": "diagram",
-          "image": "http://files.cluster2.hostgator.co.in/hostgator89775/image/librarytour_2.jpg",
+          "image": "https://sp-uploads.s3.amazonaws.com/uploads%2Fservices%2F2190321%2F20210914205237_61410b9579eb1_115009_listening_sample_task___plan_map_diagram_labellingpage0.png",
           "labels": [
             { "id": "11", "correct_label": "Reference books" },
             { "id": "12", "correct_label": "Periodicals" },
