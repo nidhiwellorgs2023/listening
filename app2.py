@@ -106,9 +106,6 @@ for part_name, part_data in ielts_data[0].items():
                     ]
                     unique_options.extend(filter(None, options))  # Add only non-None options
 
-                # Remove duplicates
-                # unique_options = list(set(unique_options))
-
                 # Dropdown for each matching pair
                 match_answers = {}
                 for match in question['matches']:
@@ -134,7 +131,6 @@ for part_name, part_data in ielts_data[0].items():
                     "Your answer:", key=f"fill_{part_name}_{question_text}"
                 )
 
-# Submit and evaluate answers
 # Submit and evaluate answers
 if st.button("Submit Exam"):
     results = []
@@ -167,24 +163,57 @@ if st.button("Submit Exam"):
                         "status": result_status
                     })
                 elif 'matches' in question:
-                    correct_matches = {item.get('apartment', item.get('person')): item.get('facility', item.get('work')) for item in question['matches']}
-                    user_matches = user_answers.get(question_text, {})
-                    if user_matches == correct_matches:
-                        correct_count += 1
-                        result_status = "Correct"
-                    elif not user_matches:
-                        unanswered_count += 1
-                        result_status = "Unanswered"
-                    else:
-                        incorrect_count += 1
-                        result_status = "Incorrect"
-                    
+                    # Initialize counts for this question
+                    total_matches = 0
+                    correct_matches = 0
+
+                    # Evaluate all types of matches
+                    match_results = []
+                    for match in question['matches']:
+                        left_item = (
+                            match.get('apartment')
+                            or match.get('person')
+                            or match.get('strategy')
+                            or match.get('feature')
+                        )
+                        correct_answer = (
+                            match.get('facility')
+                            or match.get('work')
+                            or match.get('benefit')
+                            or match.get('description')
+                        )
+
+                        user_answer = user_answers.get(question_text, {}).get(left_item)
+
+                        if user_answer is None:
+                            result_status = "Unanswered"
+                        elif user_answer.strip().lower() == correct_answer.strip().lower():
+                            correct_matches += 1
+                            result_status = "Correct"
+                        else:
+                            result_status = "Incorrect"
+
+                        # Store result for each individual match
+                        match_results.append({
+                            "pair": f"{left_item} -> {correct_answer}",
+                            "your_answer": user_answer,
+                            "status": result_status
+                        })
+                        total_matches += 1
+
+                    # Count correct, incorrect, and unanswered matches for this question
+                    correct_count += correct_matches
+                    unanswered_count += total_matches - correct_matches - len([
+                        match for match in match_results if match["status"] == "Incorrect"
+                    ])
+                    incorrect_count += len([
+                        match for match in match_results if match["status"] == "Incorrect"
+                    ])
+
                     # Add detailed feedback for matches
                     results.append({
                         "question": question_text,
-                        "your_answer": user_matches,
-                        "correct_answer": correct_matches,
-                        "status": result_status
+                        "details": match_results
                     })
                 else:
                     correct_answer = question['answer']
@@ -222,6 +251,12 @@ if st.button("Submit Exam"):
     st.subheader("Detailed Feedback")
     for result in results:
         st.write(f"**Question:** {result['question']}")
-        st.write(f"Your Answer: {result['your_answer']} ({result['status']})")
-        st.write(f"Correct Answer: {result['correct_answer']}")
-        st.write("---")
+        if "details" in result:
+            for match_result in result['details']:
+                st.write(f"Pair: {match_result['pair']}")
+                st.write(f"Your Answer: {match_result['your_answer']} ({match_result['status']})")
+            st.write("---")
+        else:
+            st.write(f"Your Answer: {result['your_answer']} ({result['status']})")
+            st.write(f"Correct Answer: {result['correct_answer']}")
+            st.write("---")
