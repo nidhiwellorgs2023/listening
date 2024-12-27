@@ -71,7 +71,7 @@ for part_name, part_data in ielts_data[0].items():
             if question.get('type') == 'diagram':
                 # Display diagram
                 if question.get('image'):
-                    st.image( "https://sp-uploads.s3.amazonaws.com/uploads%2Fservices%2F2190321%2F20210914205237_61410b9579eb1_115009_listening_sample_task___plan_map_diagram_labellingpage0.png", caption="Label the diagram")
+                    st.image(question['image'], caption="Label the diagram")
                 else:
                     st.error("Diagram not available for this question.")
 
@@ -135,6 +135,7 @@ for part_name, part_data in ielts_data[0].items():
                 )
 
 # Submit and evaluate answers
+# Submit and evaluate answers
 if st.button("Submit Exam"):
     results = []
     correct_count = 0
@@ -150,28 +151,61 @@ if st.button("Submit Exam"):
                     user_labels = user_answers.get(question_text, {})
                     if user_labels == correct_labels:
                         correct_count += 1
+                        result_status = "Correct"
                     elif not user_labels:
                         unanswered_count += 1
+                        result_status = "Unanswered"
                     else:
                         incorrect_count += 1
+                        result_status = "Incorrect"
+                    
+                    # Add detailed feedback for diagrams
+                    results.append({
+                        "question": question_text,
+                        "your_answer": user_labels,
+                        "correct_answer": correct_labels,
+                        "status": result_status
+                    })
                 elif 'matches' in question:
                     correct_matches = {item.get('apartment', item.get('person')): item.get('facility', item.get('work')) for item in question['matches']}
                     user_matches = user_answers.get(question_text, {})
                     if user_matches == correct_matches:
                         correct_count += 1
+                        result_status = "Correct"
                     elif not user_matches:
                         unanswered_count += 1
+                        result_status = "Unanswered"
                     else:
                         incorrect_count += 1
+                        result_status = "Incorrect"
+                    
+                    # Add detailed feedback for matches
+                    results.append({
+                        "question": question_text,
+                        "your_answer": user_matches,
+                        "correct_answer": correct_matches,
+                        "status": result_status
+                    })
                 else:
                     correct_answer = question['answer']
                     user_answer = user_answers.get(question_text, None)
                     if user_answer is None or user_answer.strip() == "":
                         unanswered_count += 1
+                        result_status = "Unanswered"
                     elif user_answer.strip().lower() == correct_answer.strip().lower():
                         correct_count += 1
+                        result_status = "Correct"
                     else:
                         incorrect_count += 1
+                        result_status = "Incorrect"
+                    
+                    # Add detailed feedback for other questions
+                    results.append({
+                        "question": question_text,
+                        "your_answer": user_answer,
+                        "correct_answer": correct_answer,
+                        "status": result_status
+                    })
 
     total_questions = correct_count + incorrect_count + unanswered_count
     band_score = calculate_band_score(correct_count, total_questions)
@@ -185,3 +219,9 @@ if st.button("Submit Exam"):
     st.write(f"**Skill Level:** {band_description['skill_level']}")
     st.write(f"**Description:** {band_description['description']}")
 
+    st.subheader("Detailed Feedback")
+    for result in results:
+        st.write(f"**Question:** {result['question']}")
+        st.write(f"Your Answer: {result['your_answer']} ({result['status']})")
+        st.write(f"Correct Answer: {result['correct_answer']}")
+        st.write("---")
