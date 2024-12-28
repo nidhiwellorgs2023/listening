@@ -1,0 +1,98 @@
+[
+    {
+      "_id": { "$oid": "unique_id_here" },
+      "audio": "https://kananco-assests.s3.ap-south-1.amazonaws.com/audio/listening/ielts-listening-practice-test-3-audio.mp3",
+      "Part 1": {
+        "questions": [
+          { "question": "Colour: (1)", "answer": "grey/gray" },
+          { "question": "Mileage: (2)", "answer": "62,000" },
+          { "question": "Previous owner was a (3)", "answer": "teacher" },
+          { "question": "Current owner has used car mainly for (4)", "answer": "shopping" },
+          { "question": "Price: may accept offers from (5)", "answer": "1,100" },
+          { "question": "Note: (6) not due for 5 months", "answer": "tax" },
+          { "question": "Condition: good (recently serviced). Will need a new (7)", "answer": "tyre/tire" },
+          { "question": "Minor problem with a (8)", "answer": "headlight" },
+          { "question": "Viewing agreed to view the car on (9)", "answer": "thursday" },
+          { "question": "Address: (10)", "answer": "london" }
+        ]
+      },
+      "Part 2": {
+        "questions": [
+          {
+            "question": "The Treloar Valley passenger ferry",
+            "options": ["A) usually starts services in April.", "B) departs at the same time each day.", "C) is the main means of transport for local villagers."],
+            "answer": "A"
+          },
+          {
+            "question": "What does the speaker say about the river cruise?",
+            "options": ["A) It can be combined with a train journey.", "B) It's unsuitable for people who have walking difficulties.", "C) The return journey takes up to four hours."],
+            "answer": "A"
+          },
+          {
+            "question": "What information is given about train services in the area?",
+            "options": ["A) Trains run non-stop between Calton and Plymouth.", "B) One section of the rail track is raised.", "C) Bookings can be made by telephone or the Internet."],
+            "answer": "B"
+          },
+          {
+            "question": "The 'Rover' bus ticket",
+            "options": ["A) can be used for up to five journeys a day.", "B) is valid for weekend travel only.", "C) has recently gone down in price."],
+            "answer": "C"
+          },
+          {
+            "question": "Label the map below. Write the correct letter, A - H, next to questions 15-20.",
+            "type": "diagram",
+            "image": "https://websitecmscdn.s3.ap-south-1.amazonaws.com/pasted_image_0_5d1b3fb22d.png?updated_at=2022-12-02T10:23:58.562Z",
+            "labels": [
+              { "id": "Bus stop", "correct_label": "H" },
+              { "id": "Car park", "correct_label": "F" },
+              { "id": "Museum", "correct_label": "E" },
+              { "id": "Mill", "correct_label": "A" },
+              { "id": "Potters's stuio", "correct_label": "B" },
+              { "id": "Cafe", "correct_label": "D" }
+            ]
+          }
+        ]
+      },
+      "Part 3": {
+        "questions": [
+          { "question": "What does Howard say about the experience of writing his dissertation?", "options": ["A) It was difficult in unexpected ways.", "B) It was more enjoyable than he’d anticipated.", "C) It helped him understand previous coursework."], "answer": "C" },
+          { "question": "What is Joanne most worried about?", 
+            "options": ["A) Finding enough material.", "B) Missing deadlines.", "C) Writing too much."], 
+            "answer": "C" },
+          { "question": "What does Howard say was his main worry a year previously?", 
+            "options": ["A) Forgetting what he'd read about.", "B) Not understanding what he'd read.", "C) Taking such a long time to read each book."], 
+            "answer": "A" },
+          { "question": "What motivated Howard to start writing his dissertation?", "options": ["A) Talking to his tutor about his problems.", "B) Seeing an inspirational TV show.", "C) Reading a controversial journal article."], "answer": "B" },
+          {
+            "question": "What TWO things does Howard advise Joanne to do in the first month of tutorials?",
+            "options": ["A) See her tutor every week.", "B) Review all the module booklists.", "C) Buy all the key books.", "D) Write full references for everything she reads.", "E) Write a draft of the first chapter."],
+            "answer": ["B", "E"]
+          },
+          {"question":"What TWO things does Howard say about library provision?",
+          "options":["A) Staff are particularly helpful to undergraduates.","B) Inter-library loans are very reliable.","C) Students can borrow extra books when writing a dissertation","D) Staff recommend relevant old dissertations.","E) It's difficult to access electronic resources."],
+          "answer":["C","D"]
+          },
+          {
+            "question":"What TWO things does Joanne agree to discuss with her tutor?",
+            "options":["A) The best ways to collaborate with other students","B) Who to get help from during college vacations","C) The best way to present the research.","D) Whether she can use web sources.","E) How to manage her study time"],
+            "answer":["B","D"]
+          }
+        ]
+      },
+      "Part 4": {
+        "questions": [
+          { "question": "Background  researcher had previously studied", "answer": "english literature" },
+          { "question": "Had initial idea for research  inspired by a book of a famous novelist", "answer": "autobiography" },
+          {"question":  "Avoided studies conducted in a_______ because too controlled","answer":" lab(oratory)"},
+          {"question":  "Most helpful studies-research into_______e.g waiting tables","answer":"practical skills"},
+          { "question": "Found participants: four true_______ in creative writing (easy to find) and four with extensive experience.", "answer": "novices/ beginners" },
+          { "question": "Using 'think aloud'techniques, gathered _______ data from inexperienced writer.", "answer": "experimental" },
+          {"question":  "(During session '-' assistant made ________ recordings)","answer":"video"},
+          { "question": "Compared two data sets and generated a _______ for analysis", "answer": "framework" },
+          { "question": "Got an expert _______ to evaluate the quality of the different products", "answer": "editor" },
+          { "question": "Identified the most effective_______ of stages in producing text", "answer": "sequence/ order" }
+        ]
+      }
+    }
+  ]
+  
