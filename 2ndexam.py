@@ -2,12 +2,9 @@ import streamlit as st
 import json
 
 # Load JSON Data
-
 with open('2ndjson.json', 'r') as file:
         data = json.load(file)
     
-
-
 # Function to calculate band score
 def calculate_band_score(correct_count, total_questions):
     if total_questions == 0:
@@ -56,6 +53,13 @@ st.title("IELTS Listening Exam")
 # Audio Player
 st.audio(data[0]["audio"], format="audio/mp3")
 
+# Instruction for the audio
+st.write("**Instruction:** The audio contains all the parts covered in this exam. Please listen carefully.")
+
+# Instruction for Part 1
+# st.subheader("Part 1")
+# st.write("**Instruction:** Complete the notes below. Write NO MORE THAN ONE WORD OR A NUMBER for each answer.")
+
 # Collect answers from the user
 user_answers = {}
 
@@ -63,6 +67,18 @@ user_answers = {}
 for part_key, part_content in data[0].items():
     if part_key.startswith("Part"):
         st.header(part_key)
+
+        # Add specific instructions for each part
+        if part_key == "Part 1":
+            st.write("**Instruction:** Complete the notes below. Write NO MORE THAN ONE WORD OR A NUMBER for each answer.")
+        elif part_key == "Part 2":
+            st.write("**Instruction:** Choose the correct letter, A, B, or C.")
+        elif part_key == "Part 3":
+            st.write("**Instruction:** Choose the correct letter, A, B, or C. For questions that ask for two answers, choose TWO letters, A-E.")
+        elif part_key == "Part 4":
+            st.write("**Instruction:** Complete the flow chart below. Write NO MORE THAN TWO WORDS for each answer.")
+
+        # Render questions for each part
         for q in part_content["questions"]:
             if "options" in q:
                 if isinstance(q["answer"], list):
